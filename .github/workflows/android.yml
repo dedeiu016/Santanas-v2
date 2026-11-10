@@ -2,6 +2,9 @@
 name: Gerar APK Santanas
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -9,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Baixar projeto
+      - name: Baixar codigo
         uses: actions/checkout@v4
 
       - name: Configurar Java
@@ -23,30 +26,24 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Verificar estrutura
-        run: |
-          ls -la
-          ls -la app
-
-      
       - name: Diagnosticar projeto
-  run: |
-    echo "=== ARQUIVOS DO PROJETO ==="
-    ls -la
-    echo "=== CONFIGURACAO GRADLE ==="
-    if [ -f settings.gradle.kts ]; then
-      cat settings.gradle.kts
-    elif [ -f settings.gradle ]; then
-      cat settings.gradle
-    else
-      echo "Arquivo settings não encontrado"
-    fi
-    echo "=== PROJETOS GRADLE ==="
-    gradle projects
-    echo "=== TAREFAS DO APP ==="
-    gradle :app:tasks --all
+        run: |
+          echo "=== ARQUIVOS DO PROJETO ==="
+          ls -la
+          echo "=== PASTA APP ==="
+          ls -la app || true
+          echo "=== CONFIGURACAO GRADLE ==="
+          if [ -f settings.gradle.kts ]; then
+            cat settings.gradle.kts
+          elif [ -f settings.gradle ]; then
+            cat settings.gradle
+          else
+            echo "Arquivo settings não encontrado"
+          fi
+          echo "=== PROJETOS GRADLE ==="
+          gradle projects
 
-      - name: Gerar APK
+      - name: Compilar APK
         run: gradle :app:assembleDebug
 
       - name: Salvar APK
@@ -55,4 +52,3 @@ jobs:
           name: Santana-APK
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
-
