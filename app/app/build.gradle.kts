@@ -14,10 +14,4 @@ android {
         versionCode = 1
         versionName = "2.0"
     }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-    }
 }
