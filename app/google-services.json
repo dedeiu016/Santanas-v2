@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "113076620388",
+    "project_id": "santanas-v2",
+    "storage_bucket": "santanas-v2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113076620388:android:bfa80848eff61b5ffca371",
+        "android_client_info": {
+          "package_name": "com.santanas.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA03L10aHeQYAlzwv1NMtg0PsCMhGzpJY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
