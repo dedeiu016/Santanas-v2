@@ -28,8 +28,19 @@ jobs:
           ls -la
           ls -la app
 
+      
+      - name: Diagnosticar projeto
+        run: |
+          echo "=== CONFIGURACAO ==="
+          cat settings.gradle
+          echo "=== PROJETOS ==="
+          gradle projects
+          echo "=== TAREFAS ANDROID ==="
+          gradle :app:tasks --all
+
       - name: Gerar APK
         run: gradle :app:assembleDebug
+
       - name: Salvar APK
         uses: actions/upload-artifact@v4
         with:
