@@ -30,13 +30,21 @@ jobs:
 
       
       - name: Diagnosticar projeto
-        run: |
-          echo "=== CONFIGURACAO ==="
-          cat settings.gradle
-          echo "=== PROJETOS ==="
-          gradle projects
-          echo "=== TAREFAS ANDROID ==="
-          gradle :app:tasks --all
+  run: |
+    echo "=== ARQUIVOS DO PROJETO ==="
+    ls -la
+    echo "=== CONFIGURACAO GRADLE ==="
+    if [ -f settings.gradle.kts ]; then
+      cat settings.gradle.kts
+    elif [ -f settings.gradle ]; then
+      cat settings.gradle
+    else
+      echo "Arquivo settings não encontrado"
+    fi
+    echo "=== PROJETOS GRADLE ==="
+    gradle projects
+    echo "=== TAREFAS DO APP ==="
+    gradle :app:tasks --all
 
       - name: Gerar APK
         run: gradle :app:assembleDebug
