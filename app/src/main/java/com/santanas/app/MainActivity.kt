@@ -151,7 +151,10 @@ class MainActivity : Activity() {
             requestCode, permissions, grantResults
         )
 
-        if (requestCode == 100) {
+        if (requestCode == 100)
+        if (requestCode == 200) {
+    showContacts()
+        }{
             locationEnabled = grantResults.any {
                 it == PackageManager.PERMISSION_GRANTED
             }
