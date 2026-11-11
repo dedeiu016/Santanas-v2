@@ -159,27 +159,65 @@ class MainActivity : Activity() {
         }
     }
 
-    private fun showContacts() {
-        content.removeAllViews()
-        content.addView(makeText("Meus contatos", 23f, green))
+    
+private fun showContacts() {
+    content.removeAllViews()
+
+    content.addView(makeText("Meus contatos", 23f, green))
+
+    if (checkSelfPermission(Manifest.permission.READ_CONTACTS)
+        != PackageManager.PERMISSION_GRANTED) {
+
+        val permissionButton = makeButton("ACESSAR MEUS CONTATOS")
+
+        permissionButton.setOnClickListener {
+            requestPermissions(
+                arrayOf(Manifest.permission.READ_CONTACTS),
+                200
+            )
+        }
+
         content.addView(makeText(
-            "Aqui ficará sua lista de contatos autorizados.\n\n" +
-            "A seleção de contatos e o compartilhamento " +
-            "serão implementados na próxima etapa.",
+            "Autorize o acesso para visualizar sua agenda.",
             17f, white
         ))
+
+        content.addView(permissionButton)
+        return
     }
 
-    private fun makeText(
-        value: String,
-        size: Float,
-        color: Int
-    ): TextView {
-        return TextView(this).apply {
-            text = value
-            textSize = size
-            setTextColor(color)
-            setPadding(0, 15, 0, 20)
+    var total = 0
+
+    val cursor = contentResolver.query(
+        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+        arrayOf(
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Phone.NUMBER
+        ),
+        null,
+        null,
+        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC"
+    )
+
+    cursor?.use {
+        while (it.moveToNext()) {
+            val name = it.getString(0) ?: "Sem nome"
+            val number = it.getString(1) ?: ""
+
+            content.addView(makeText(
+                "$name\n$number",
+                16f,
+                white
+            ))
+
+            total++
         }
+    }
+
+    if (total == 0) {
+        content.addView(makeText(
+            "Nenhum contato encontrado.",
+            17f, white
+        ))
     }
 }
